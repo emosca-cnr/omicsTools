@@ -4,7 +4,13 @@
 \alias{filter_and_normalize}
 \title{filter_and_normalize}
 \usage{
-filter_and_normalize(genes_by_samples_matrix)
+filter_and_normalize(
+  genes_by_samples_matrix,
+  annotation = NULL,
+  samples = NULL,
+  min_sample_perc = 0.2,
+  min_cpm = 3
+)
 }
 \description{
 filter_and_normalize

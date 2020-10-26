@@ -2,7 +2,7 @@
 #'
 #'
 #' @export
-#' @import edgeR org.Hs.eg.db grDevices
+#' @import edgeR grDevices
 
 filter_and_normalize <- function(genes_by_samples_matrix, annotation=NULL, samples=NULL, min_sample_perc=0.2, min_cpm=3){
 
