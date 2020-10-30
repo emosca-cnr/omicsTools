@@ -20,6 +20,7 @@ differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL){
 	tt <- lapply(1:ncol(fit_l$coefficients), function(x) limma::topTable(fit_l, coef = x, number=Inf))
 
 	return(list(fit=fit_l, tt=tt))
+
 }
 
 

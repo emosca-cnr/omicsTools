@@ -10,7 +10,9 @@ filter_and_normalize <- function(genes_by_samples_matrix, annotation=NULL, sampl
 	cat("removing all-zero rows...\n")
 	cat("\t", sum(rowSums(genes_by_samples_matrix)==0), "rows...\n")
 	idx_zero <- which(rowSums(genes_by_samples_matrix)==0)
-	genes_by_samples_matrix <-  genes_by_samples_matrix[-idx_zero, ]
+	if(length(idx_zero) > 0){
+		genes_by_samples_matrix <-  genes_by_samples_matrix[-idx_zero, ]
+	}
 
 	cat("DGEList...\n")
 	dge <- edgeR::DGEList(genes_by_samples_matrix, genes = annotation)
