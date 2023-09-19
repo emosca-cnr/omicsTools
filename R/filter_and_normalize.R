@@ -1,4 +1,4 @@
-#' filter_and_normalize
+#' Filter and normalize count data
 #'
 #'
 #' @export
@@ -7,6 +7,7 @@
 filter_and_normalize <- function(genes_by_samples_matrix, annotation=NULL, samples=NULL, min_sample_perc=0.2, min_cpm=3, out_dir="./", class=NULL, pal=NULL, top_pca=500){
 
 	genes_by_samples_matrix[is.na(genes_by_samples_matrix)] <- 0
+	
 	#remove rows with all elements equal to 0
 	cat("removing all-zero rows...\n")
 	cat("\t", sum(rowSums(genes_by_samples_matrix)==0), "rows...\n")
@@ -117,7 +118,6 @@ filter_and_normalize <- function(genes_by_samples_matrix, annotation=NULL, sampl
 	legend("center", legend = levels(class), col=pal, cex=0.5, pch=16)
 
 	dev.off()
-
 
 	return(list(dge=dge_filt_norm, lcpm=lcpm_filt_norm))
 
