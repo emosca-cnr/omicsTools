@@ -2,10 +2,15 @@
 % Please edit documentation in R/RLE.R
 \name{RLE}
 \alias{RLE}
-\title{RLE}
+\title{Relative log-expression}
 \usage{
-RLE(x, robust = TRUE, use.logs = FALSE)
+RLE(x = NULL, robust = FALSE)
+}
+\arguments{
+\item{x}{normalized feature-by-samples matrix in log-space.}
+
+\item{robust}{if TRUE, use median instead of mean. FALSE by default.}
 }
 \description{
-RLE
+$y_{ij} = x_{ij} - mean(x_i)
 }

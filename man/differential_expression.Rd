@@ -4,7 +4,12 @@
 \alias{differential_expression}
 \title{differential_expression}
 \usage{
-differential_expression(dge = NULL, design = NULL, contr_mat = NULL)
+differential_expression(
+  dge = NULL,
+  design = NULL,
+  contr_mat = NULL,
+  out_dir = "./"
+)
 }
 \description{
 differential_expression
