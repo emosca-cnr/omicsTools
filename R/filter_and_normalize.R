@@ -14,11 +14,17 @@ filter_and_normalize <- function(X=NULL, annotation=NULL, min_sample_perc=0.2, m
 	if(is.null(class)){
 	  stop("class is mandatory.\n")
 	}
-	
+	if(length(class) != ncol(X)){
+	  stop("lenght of class must be equal to ncol(X)\n.")
+	}
 	class <- as.factor(class)
 	
+	if(!identical(rownames(X), rownames(annotation))){
+	  stop("rownames(X) must be identical to rownames(annotation).\n")
+	}
+	
 	if(is.null(pal)){
-	  pal <- pals::brewer.paired(length(levels(class)))
+	  pal <- pals::alphabet(length(levels(class)))
 	}
 	
 	#remove rows with all elements equal to 0
