@@ -5,15 +5,24 @@
 \title{Filter and normalize count data}
 \usage{
 filter_and_normalize(
-  genes_by_samples_matrix = NULL,
+  X = NULL,
   annotation = NULL,
   min_sample_perc = 0.2,
   min_cpm = 3,
   out_dir = "./",
   class = NULL,
   pal = NULL,
-  top_pca = 500
+  nFeatures = 2000
 )
+}
+\arguments{
+\item{X}{genes-by-samples count matrix}
+
+\item{annotation}{data.frame with gene annotations}
+
+\item{min_sample_perc}{minimum percentage of samples a gene must be expressed with min_cpm counts per million}
+
+\item{min_cpm}{mininum count per million a gene must have in at least min_sample_perc percentage of samples}
 }
 \description{
 Filter and normalize count data
