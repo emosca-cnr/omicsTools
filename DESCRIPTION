@@ -13,4 +13,12 @@ Depends:
     R (>= 3.5.0)
 Imports:
     edgeR,
-    limma
+    limma,
+    DESeq2,
+    pals,
+    pcaMethods,
+    grDevices,
+    plotrix,
+    vsn,
+    SummarizedExperiment
+

@@ -8,7 +8,9 @@ differential_expression(
   dge = NULL,
   design = NULL,
   contr_mat = NULL,
-  out_dir = "./"
+  out_dir = "./",
+  top_genes = 10,
+  top_genes_column = "symbol"
 )
 }
 \description{
