@@ -3,6 +3,7 @@
 #' @param x normalized feature-by-samples matrix in log-space.
 #' @param robust if TRUE, use median instead of mean. FALSE by default.
 #' @export
+#' @importFrom stats median
 
 RLE <- function(x=NULL, robust=FALSE){
 

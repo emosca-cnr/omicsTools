@@ -2,7 +2,8 @@
 % Please edit documentation in R/differential_expression.R
 \name{differential_expression}
 \alias{differential_expression}
-\title{differential_expression}
+\title{Differential_expression for count data
+Differential expression analysis based on limma}
 \usage{
 differential_expression(
   dge = NULL,
@@ -13,6 +14,27 @@ differential_expression(
   top_genes_column = "symbol"
 )
 }
+\arguments{
+\item{dge}{DGEList}
+
+\item{design}{experimental design matrix}
+
+\item{contr_mat}{contrast matrix, given to makeContrasts()}
+
+\item{out_dir}{output directory}
+
+\item{top_genes}{number of top genes to label in the volcano plots}
+
+\item{top_genes_column}{column with gene labels for volcano plots}
+}
+\value{
+A list with:
+\enumerate{
+  \item result of lmFit()
+  \item tt list of differential expression tables given by TopTable()
+}
+}
 \description{
-differential_expression
+Differential_expression for count data
+Differential expression analysis based on limma
 }

@@ -1,8 +1,20 @@
-#' differential_expression
-#'
-#' @import limma openxlsx
+#' Differential_expression for count data
+#' Differential expression analysis based on limma
+#' @param dge DGEList
+#' @param design experimental design matrix
+#' @param contr_mat contrast matrix, given to makeContrasts()
+#' @param out_dir output directory
+#' @param top_genes number of top genes to label in the volcano plots
+#' @param top_genes_column column with gene labels for volcano plots
+#' @import openxlsx
 #' @importFrom plotrix thigmophobe.labels
-
+#' @importFrom limma makeContrasts lmFit voom contrasts.fit eBayes topTable
+#' @importFrom utils combn read.delim write.table
+#' @return A list with:
+#' \enumerate{
+#'   \item result of lmFit()
+#'   \item tt list of differential expression tables given by TopTable()
+#' }
 #' @export
 
 differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_dir="./", top_genes=10, top_genes_column="symbol"){
@@ -10,16 +22,16 @@ differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_d
 	if(is.null(contr_mat)){
 		cat("all-pairs contrasts...\n")
 		contr_mat <- apply(t(combn(colnames(design), 2)), 1, paste, collapse="-")
-		contr_mat <- limma::makeContrasts(contrasts = contr_mat, levels = design)
+		contr_mat <- makeContrasts(contrasts = contr_mat, levels = design)
 	}
 	print(contr_mat)
 
-	v <- limma::voom(dge, design, plot=FALSE)
-	fit_l <- limma::lmFit(v, design)
-	fit_lc <- limma::contrasts.fit(fit_l, contr_mat)
-	fit_lc <- limma::eBayes(fit_lc)
+	v <- voom(dge, design, plot=FALSE)
+	fit_l <- lmFit(v, design)
+	fit_lc <- contrasts.fit(fit_l, contr_mat)
+	fit_lc <- eBayes(fit_lc)
 
-	tt <- lapply(1:ncol(fit_lc$coefficients), function(x) limma::topTable(fit_lc, coef = x, number=Inf))
+	tt <- lapply(1:ncol(fit_lc$coefficients), function(x) topTable(fit_lc, coef = x, number=Inf))
 	names(tt) <- colnames(fit_lc$coefficients)
 
 	wb <- createWorkbook()
