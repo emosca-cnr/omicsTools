@@ -19,7 +19,9 @@
 
 differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_dir="./", top_genes=10, top_genes_column="symbol"){
 
-	if(is.null(contr_mat)){
+  dir.create(out_dir, recursive = T)
+  
+  if(is.null(contr_mat)){
 		cat("all-pairs contrasts...\n")
 		contr_mat <- apply(t(combn(colnames(design), 2)), 1, paste, collapse="-")
 		contr_mat <- makeContrasts(contrasts = contr_mat, levels = design)
@@ -67,7 +69,7 @@ differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_d
 		dev.off()
 		
 	}
-	saveWorkbook(wb, "degs.xlsx", TRUE)
+	saveWorkbook(wb, paste0(out_dir, "/degs.xlsx"), TRUE)
 
 
 	return(list(fit=fit_l, tt=tt))
