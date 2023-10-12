@@ -82,7 +82,7 @@ filter_counts <- function(X=NULL, out_dir="./", col=NULL, width = 180, height=18
   xlim <- summary(unlist(lapply(dens, function(x) x$x)))[c(1, 6)]
   ylim <- summary(unlist(lapply(dens, function(x) x$y)))[c(1, 6)]
   
-  plot(dens[[1]]$x, dens[[1]]$y, ylim=ylim, xlim=xlim, xlab="log-cmp", ylab="d", main = "raw")
+  plot(dens[[1]]$x, dens[[1]]$y, ylim=ylim, xlim=xlim, xlab="log-cmp", ylab="d", main = "raw", type="l")
   for(i in 2:length(dens)){
     lines(dens[[i]]$x, dens[[i]]$y, col=i)
   }
@@ -93,7 +93,7 @@ filter_counts <- function(X=NULL, out_dir="./", col=NULL, width = 180, height=18
   xlim <- summary(unlist(lapply(dens, function(x) x$x)))[c(1, 6)]
   ylim <- summary(unlist(lapply(dens, function(x) x$y)))[c(1, 6)]
   
-  plot(dens[[1]]$x, dens[[1]]$y, ylim=ylim, xlim=xlim, xlab="log-cmp", ylab="d", main = "filtered")
+  plot(dens[[1]]$x, dens[[1]]$y, ylim=ylim, xlim=xlim, xlab="log-cmp", ylab="d", main = "filtered", type="l")
   for(i in 2:length(dens)){
     lines(dens[[i]]$x, dens[[i]]$y, col=i)
   }
