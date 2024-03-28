@@ -4,7 +4,7 @@ Title: Tools for omics data analysis
 Version: 0.1.0
 Author: Ettore Mosca
 Maintainer: Ettore Mosca <ettore.mosca@itb.cnr.it>
-Description: Tools for omics data analysis.
+Description: R functions for omics data analysis.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

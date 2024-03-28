@@ -9,7 +9,7 @@ normalize_counts(
   gene.annotation = NULL,
   col.by = "condition",
   sample.annotation = NULL,
-  out_dir = "./",
+  out_dir = NULL,
   pal = NULL,
   nFeatures = 2000,
   width = 180,
@@ -24,11 +24,11 @@ normalize_counts(
 \arguments{
 \item{X}{genes-by-samples count matrix}
 
-\item{gene.annotation}{data.frame with gene gene.annotations}
+\item{gene.annotation}{data.frame with gene annotations}
 
 \item{col.by}{a column of sample.annnotatio to color plots. it is coerced to factor}
 
-\item{sample.annotation}{data.frame with sample gene.annotations}
+\item{sample.annotation}{data.frame with sample annotations}
 
 \item{out_dir}{output directory}
 

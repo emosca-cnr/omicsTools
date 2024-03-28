@@ -9,7 +9,7 @@ differential_expression(
   dge = NULL,
   design = NULL,
   contr_mat = NULL,
-  out_dir = "./",
+  out_dir = NULL,
   top_genes = 10,
   top_genes_column = "symbol"
 )

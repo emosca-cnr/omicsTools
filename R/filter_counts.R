@@ -20,10 +20,15 @@
 #' @importFrom graphics abline barplot boxplot hist layout legend lines par plot.new points
 #' @importFrom stats density
 
-filter_counts <- function(X=NULL, out_dir="./", col=NULL, width = 180, height=180, res=300, units="mm", prior.count=3, filter.by.cpm=TRUE, min.cpm=3, min.counts=10, subset.remove=NULL, min.samples=NULL){
+filter_counts <- function(X=NULL, out_dir=NULL, col=NULL, width = 180, height=180, res=300, units="mm", prior.count=3, filter.by.cpm=TRUE, min.cpm=3, min.counts=10, subset.remove=NULL, min.samples=NULL){
   
   
-  dir.create(out_dir, recursive = T)
+  if(is.null(out_dir)){
+    out_dir <- getwd()
+  }else{
+    dir.create(out_dir, recursive = T)
+  }
+  
   
   X[is.na(X)] <- 0
   
@@ -73,9 +78,9 @@ filter_counts <- function(X=NULL, out_dir="./", col=NULL, width = 180, height=18
   lcpm_filt <- cpm(dge, log = T, prior.count = prior.count) #for reproducibility with voom
     
   #density plots of raw and filtered data
-  jpeg(paste0(out_dir, "/density.jpg"), width = width, height = height/2, res=res, units=units)
+  jpeg(file.path(out_dir, "density.jpg"), width = width, height = height/2, res=res, units=units)
   par(mfrow=c(1, 2))
-  
+  par(oma=c(0, 0, 0, 4))
   
   dens <- apply(lcpm, 2, density)
   
@@ -99,12 +104,16 @@ filter_counts <- function(X=NULL, out_dir="./", col=NULL, width = 180, height=18
   }
   abline(v=0, lty=2)
   
+  par(xpd = TRUE)
+  legend("right", inset=-0.4, legend = colnames(lcpm_filt), pch=16, col=col, cex=0.7, xpd=T, bty="n")
+  
+  
   dev.off()
   
   nS <- rowSums(sign(X_filt))
   nG <- colSums(sign(X_filt))
   
-  png(paste0(out_dir, "/library.size.genes.png"), width=width, height=height/2, units="mm", res=300)
+  png(file.path(out_dir, "library.size.genes.png"), width=width, height=height/2, units="mm", res=300)
   
   par(mfrow=c(1, 2))
   par(mgp=c(2, .5, 0))
@@ -114,9 +123,16 @@ filter_counts <- function(X=NULL, out_dir="./", col=NULL, width = 180, height=18
   
   dev.off()
   
-  png(paste0(out_dir, "/library_sizes.ngenes.counts.png"), width=width, height=height, units="mm", res=300)
+  png(file.path(out_dir, "library_sizes.ngenes.counts.png"), width=width, height=height*0.9, units="mm", res=300)
+  
+  par(mar=c(3, 3, .1, 5))
   par(mgp=c(1.5, .5, 0))
-  plot(colSums(X_filt), nG, cex=0.6, col=col, xlab="# reads", ylab="# genes", pch=16, log="xy", cex.axis = 0.6, cex.lab=0.6)
+  
+  plot(colSums(X_filt), nG, cex=2, col=col, xlab="# reads", ylab="# genes", pch=16, log="xy", cex.axis = 0.6, cex.lab=0.6)
+  
+  par(xpd = TRUE)
+  legend("right", inset=-0.15, legend = colnames(X_filt), pch=16, col=col, cex=0.7, xpd=T, bty="n")
+
   dev.off()
   
   return(X_filt)

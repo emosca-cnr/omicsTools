@@ -4,7 +4,7 @@
 \alias{RLE}
 \title{Relative log-expression}
 \usage{
-RLE(x = NULL, robust = FALSE)
+RLE(x = NULL, robust = TRUE)
 }
 \arguments{
 \item{x}{normalized feature-by-samples matrix in log-space.}

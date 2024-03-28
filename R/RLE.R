@@ -5,7 +5,7 @@
 #' @export
 #' @importFrom stats median
 
-RLE <- function(x=NULL, robust=FALSE){
+RLE <- function(x=NULL, robust=TRUE){
 
 	if(robust){
 		ans <- t(apply(x, 1, function(y) y - median(y)))

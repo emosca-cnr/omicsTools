@@ -1,7 +1,7 @@
 #' Filter and normalize count data
 #' @param X genes-by-samples count matrix
-#' @param gene.annotation data.frame with gene gene.annotations
-#' @param sample.annotation data.frame with sample gene.annotations
+#' @param gene.annotation data.frame with gene annotations
+#' @param sample.annotation data.frame with sample annotations
 #' @param col.by a column of sample.annnotatio to color plots. it is coerced to factor
 #' @param prior.count prior.count required by cpm() function
 #' @param out_dir output directory
@@ -36,9 +36,13 @@
 #' @importFrom utils combn read.delim write.table
 #' @importFrom stats sd setNames model.matrix
 
-normalize_counts <- function(X=NULL, gene.annotation=NULL, col.by="condition", sample.annotation=NULL, out_dir="./", pal=NULL, nFeatures=2000, width = 180, height=180, res=300, units="mm", prior.count=3, pca.text=TRUE, design=NULL){
+normalize_counts <- function(X=NULL, gene.annotation=NULL, col.by="condition", sample.annotation=NULL, out_dir=NULL, pal=NULL, nFeatures=2000, width = 180, height=180, res=300, units="mm", prior.count=3, pca.text=TRUE, design=NULL){
   
-  dir.create(out_dir, recursive = T)
+  if(is.null(out_dir)){
+    out_dir <- getwd()
+  }else{
+    dir.create(out_dir, recursive = T)
+  }
   
   if(is.null(X) | is.null(sample.annotation)){
     stop("X and sample.annotation are mandatory.\n")
@@ -48,7 +52,6 @@ normalize_counts <- function(X=NULL, gene.annotation=NULL, col.by="condition", s
   if(is.null(design)){
     design <- model.matrix(~1, data = sample.annotation)
     cat("no design matrix provided, using ~ 1 and setting blind to TRUE.\n")
-    blind <- TRUE
     do.blind.false<-FALSE
   }
   
@@ -97,24 +100,24 @@ normalize_counts <- function(X=NULL, gene.annotation=NULL, col.by="condition", s
   }
   
   
-  jpeg(paste0(out_dir, "/meansd.vst.jpg"), width = width, height = height, res=res, units=units)
+  jpeg(file.path(out_dir, "meansd.vst.jpg"), width = width, height = height, res=res, units=units)
   meanSdPlot(assay(vsd))
   dev.off()
   
-  jpeg(paste0(out_dir, "/meansd.logcpmt.jpg"), width = width, height = height, res=res, units=units)
+  jpeg(file.path(out_dir, "meansd.logcpmt.jpg"), width = width, height = height, res=res, units=units)
   meanSdPlot(lcpm)
   dev.off()
   
   #library sizes
   col <- pal[as.numeric(condition)]
-  png(paste0(out_dir, "/library_sizes.png"), width=width, height=height, units=units, res=res)
+  png(file.path(out_dir, "library_sizes.png"), width=width, height=height, units=units, res=res)
   par(mar=c(6, 5, 4, 1))
   par(mgp=c(2, .5, 0))
   barplot(dge$samples$lib.size, las=2, names.arg = rownames(dge$samples), col=col, cex.lab=0.6, cex.names = 0.45, cex.axis = 0.6, xlab="", ylab="#", main="Library size")
   dev.off()
   
   #RLE
-  jpeg(paste0(out_dir, "/RLE.jpg"), width = width, height = height/2, res=res, units=units)
+  jpeg(file.path(out_dir, "RLE.jpg"), width = width, height = height/2, res=res, units=units)
   #
   par(mar=c(6, 3, 1, 1))
   par(mgp=c(2, .5, 0))
@@ -144,19 +147,19 @@ normalize_counts <- function(X=NULL, gene.annotation=NULL, col.by="condition", s
   print(res_pca_vst)
   
   
-  jpeg(paste0(out_dir, "/pca.jpg"), width = width, height = height/2, res=res, units=units)
+  jpeg(file.path(out_dir, "pca.jpg"), width = width, height = height/2, res=res, units=units)
   layout(matrix(c(1:3), nrow = 1, byrow = T), widths = c(0.42, 0.42, 0.16))
   
-  par(mar=c(3, 3, 1, 2))
+  par(mar=c(3, 3, 3, 2))
   par(mgp=c(2, .5, 0))
   
-  plot(res_pca@scores, pch=21, bg=col, cex.axis=0.6, cex.lab=0.6)
+  plot(res_pca@scores, pch=21, bg=col, cex.axis=0.6, cex.lab=0.6, xlab=paste0("PC1 (", format(res_pca@R2[1], digits=3), ")"), ylab=paste0("PC2 (", format(res_pca@R2[2], digits=3), ")"), main="lcpm")
   if(pca.text){
     par(xpd=TRUE)
     plotrix::thigmophobe.labels(res_pca@scores[, 1], res_pca@scores[, 2], labels = rownames(res_pca@scores), cex=0.5, xpd=T, col=col, font=2)
   }
   
-  plot(res_pca_vst@scores, pch=21, bg=col, cex.axis=0.6, cex.lab=0.6)
+  plot(res_pca_vst@scores, pch=21, bg=col, cex.axis=0.6, cex.lab=0.6, xlab=paste0("PC1 (", format(res_pca_vst@R2[1], digits=3), ")"), ylab=paste0("PC2 (", format(res_pca_vst@R2[2], digits=3), ")"), , main="vst")
   if(pca.text){
     par(xpd=TRUE)
     thigmophobe.labels(res_pca_vst@scores[, 1], res_pca_vst@scores[, 2], labels = rownames(res_pca_vst@scores), cex=0.5, xpd=T, col=col, font=2)
@@ -168,7 +171,7 @@ normalize_counts <- function(X=NULL, gene.annotation=NULL, col.by="condition", s
   
   dev.off()
   
-  jpeg(paste0(out_dir, "/mds.jpg"), width = width, height = height, res=res, units=units)
+  jpeg(file.path(out_dir, "mds.jpg"), width = width, height = height, res=res, units=units)
   
   layout(matrix(c(1, 2), nrow = 1, byrow = T), widths = c(0.85, 0.15))
   par(mar=c(3, 3, 1, 1))

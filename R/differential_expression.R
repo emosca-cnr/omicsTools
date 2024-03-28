@@ -17,9 +17,13 @@
 #' }
 #' @export
 
-differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_dir="./", top_genes=10, top_genes_column="symbol"){
+differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_dir=NULL, top_genes=10, top_genes_column="symbol"){
 
-  dir.create(out_dir, recursive = T)
+  if(is.null(out_dir)){
+  	out_dir <- getwd()
+  }else{
+  	dir.create(out_dir, recursive = T)
+  }
   
   if(is.null(contr_mat)){
 		cat("all-pairs contrasts...\n")
@@ -46,12 +50,12 @@ differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_d
 		tt[[i]] <- tt[[i]][order(tt[[i]]$adj.P.Val, -abs(tt[[i]]$logFC)), ]
 		
 		#save results to file
-		write.table(tt[[i]], file=paste0(out_dir, "/degs_", names(tt)[i], ".txt"), sep="\t", row.names = F)
+		write.table(tt[[i]], file=file.path(out_dir, paste0("degs_", names(tt)[i], ".txt")), sep="\t", row.names = F)
 		
 		addWorksheet(wb, names(tt)[i])
 		writeData(wb, names(tt)[i], tt[[i]])
 		
-		jpeg(paste0(out_dir, "/volcano_", names(tt)[i], ".jpg"), width = 180, height = 180, res=300, units="mm")
+		jpeg(file.path(out_dir, paste0("volcano_", names(tt)[i], ".jpg")), width = 180, height = 180, res=300, units="mm")
 
 		par(mar=c(3, 3, 3, .1))
 		par(mgp=c(2, 0.5, 0))

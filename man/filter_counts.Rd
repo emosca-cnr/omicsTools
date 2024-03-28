@@ -6,7 +6,7 @@
 \usage{
 filter_counts(
   X = NULL,
-  out_dir = "./",
+  out_dir = NULL,
   col = NULL,
   width = 180,
   height = 180,
