@@ -11,7 +11,8 @@ differential_expression(
   contr_mat = NULL,
   out_dir = NULL,
   top_genes = 10,
-  top_genes_column = "symbol"
+  top_genes_column = "symbol",
+  block = NULL
 )
 }
 \arguments{
@@ -19,7 +20,7 @@ differential_expression(
 
 \item{design}{experimental design matrix}
 
-\item{contr_mat}{contrast matrix, given to makeContrasts()}
+\item{contr_mat}{contrast matrix; see limma::makeContrasts()}
 
 \item{out_dir}{output directory}
 
@@ -30,8 +31,8 @@ differential_expression(
 \value{
 A list with:
 \enumerate{
-  \item result of lmFit()
-  \item tt list of differential expression tables given by TopTable()
+  \item fit; fit object
+  \item tt: list of differential expression tables
 }
 }
 \description{

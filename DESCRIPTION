@@ -1,7 +1,7 @@
 Package: omicsTools
 Type: Package
 Title: Tools for omics data analysis
-Version: 0.1.0
+Version: 0.1.1
 Author: Ettore Mosca
 Maintainer: Ettore Mosca <ettore.mosca@itb.cnr.it>
 Description: R functions for omics data analysis.
