@@ -4,12 +4,14 @@
 \alias{RLE}
 \title{Relative log-expression}
 \usage{
-RLE(x = NULL, robust = TRUE)
+RLE(x = NULL, robust = TRUE, na.rm = TRUE)
 }
 \arguments{
 \item{x}{normalized feature-by-samples matrix in log-space.}
 
-\item{robust}{if TRUE, use median instead of mean. FALSE by default.}
+\item{robust}{if TRUE, use median instead of mean.}
+
+\item{na.rm}{whether to remove NA or not.}
 }
 \description{
 $y_{ij} = x_{ij} - mean(x_i)

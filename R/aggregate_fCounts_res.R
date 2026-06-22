@@ -1,7 +1,9 @@
 #' Aggregate count files produced by featureCounts
+#' 
 #' @param count_files vector of count file names
 #' @param sample_names optional sample names.
 #' @importFrom stats setNames
+#' @importFrom utils read.delim
 #' @export
 #' 
 aggregate_fCounts_res <- function(count_files=NULL, sample_names=NULL){

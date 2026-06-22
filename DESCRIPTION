@@ -1,7 +1,7 @@
 Package: omicsTools
 Type: Package
 Title: Tools for omics data analysis
-Version: 0.1.1
+Version: 1.1
 Author: Ettore Mosca
 Maintainer: Ettore Mosca <ettore.mosca@itb.cnr.it>
 Description: R functions for omics data analysis.
@@ -9,18 +9,9 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: bzip2
-RoxygenNote: 7.2.3
-Depends: 
-    R (>= 3.5.0)
-Imports:
-    edgeR,
-    limma,
-    DESeq2,
-    pals,
-    pcaMethods,
-    grDevices,
-    plotrix,
-    vsn,
-    SummarizedExperiment,
-    openxlsx
-
+Roxygen: list(markdown = TRUE) 
+RoxygenNote: 7.3.2
+VignetteBuilder: knitr
+Suggests: knitr, devtools
+Depends: R (>= 3.5.0)
+Imports: DESeq2, edgeR, ggplot2, limma, openxlsx, reshape2, SummarizedExperiment, utils

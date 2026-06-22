@@ -7,17 +7,7 @@
 normalize_counts(
   X = NULL,
   gene.annotation = NULL,
-  col.by = "condition",
   sample.annotation = NULL,
-  out_dir = NULL,
-  pal = NULL,
-  nFeatures = 2000,
-  width = 180,
-  height = 180,
-  res = 300,
-  units = "mm",
-  prior.count = 3,
-  pca.text = TRUE,
   design = NULL
 )
 }
@@ -26,43 +16,19 @@ normalize_counts(
 
 \item{gene.annotation}{data.frame with gene annotations}
 
-\item{col.by}{a column of sample.annnotatio to color plots. it is coerced to factor}
-
 \item{sample.annotation}{data.frame with sample annotations}
-
-\item{out_dir}{output directory}
-
-\item{pal}{color palette; the numbers of colors must match factor levels indicated by col_by}
-
-\item{nFeatures}{number of features that will be selected by descresing sd as input for PCA}
-
-\item{width}{image width}
-
-\item{height}{image height}
-
-\item{res}{resolution}
-
-\item{units}{image units}
-
-\item{prior.count}{prior.count required by cpm() function}
-
-\item{pca.text}{whether to print sample labels}
 
 \item{design}{experimental design matrix}
 }
 \value{
 a list with the following elements
- \enumerate{
-          \item dge DGEList
-          \item lcpm log counts per million matrix
-          \item dds DESeq2 object
-          \item vsd DESeq2 transform object, resulting from vst(, blind=TRUE) for exploratory analysis
-          \item vsdbf DESeq2 transform object, resulting from vst(..., blind=FALSE) for downstream analysis
-          \item res_pca resault of PCA over lcpm
-          \item res_pca_vst resault of PCA over values returned by vst(, blind=TRUE)
-          \item var_feat features used to obtain res_pca
-          \item var_feat_vst features used to obtain res_pca_vst
-       }
+\enumerate{
+\item dge DGEList
+\item lcpm log counts per million matrix
+\item dds DESeq2 object
+\item vsd DESeq2 transform object, resulting from vst(, blind=TRUE) for exploratory analysis
+\item vsdbf DESeq2 transform object, resulting from vst(..., blind=FALSE) for downstream analysis
+}
 }
 \description{
 Filter and normalize count data

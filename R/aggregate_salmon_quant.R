@@ -2,6 +2,7 @@
 #' @param quant_files vector of count file names
 #' @param sample_names optional sample names.
 #' @importFrom stats setNames
+#' @importFrom utils read.delim
 #' @export
 
 aggregate_salmon_quant <- function(quant_files=NULL, sample_names=NULL){

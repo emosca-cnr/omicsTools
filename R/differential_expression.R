@@ -2,15 +2,13 @@
 #' Differential expression analysis based on limma
 #' @param dge DGEList
 #' @param design experimental design matrix
-#' @param contr_mat contrast matrix; see limma::makeContrasts()
+#' @param contr_mat contrast matrix; limma::makeContrasts()
 #' @param out_dir output directory
-#' @param top_genes number of top genes to label in the volcano plots
-#' @param top_genes_column column with gene labels for volcano plots
-#' @import openxlsx
-#' @importFrom plotrix thigmophobe.labels
-#' @importFrom limma makeContrasts lmFit voom contrasts.fit eBayes topTable
-#' @importFrom utils combn read.delim write.table
+#' @param ... further arguments to limma::voomLmFit()
+#' @importFrom openxlsx createWorkbook addWorksheet writeData saveWorkbook
+#' @importFrom limma contrasts.fit eBayes topTable
 #' @importFrom edgeR voomLmFit
+#' @importFrom utils  write.table
 #' @return A list with:
 #' \enumerate{
 #'   \item fit; fit object
@@ -18,7 +16,7 @@
 #' }
 #' @export
 
-differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_dir=NULL, top_genes=10, top_genes_column="symbol", block=NULL){
+differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_dir=NULL, ...){
 
   if(is.null(out_dir)){
   	out_dir <- getwd()
@@ -26,7 +24,7 @@ differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_d
   	dir.create(out_dir, recursive = T)
   }
   
-  fit_l <- voomLmFit(counts = dge, design = design, block = block)
+  fit_l <- voomLmFit(counts = dge, design = design, ...)
 
 	# Contrasts
 	if(is.null(contr_mat)){
@@ -42,6 +40,18 @@ differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_d
 	tt <- lapply(1:ncol(fit_lc$coefficients), function(x) topTable(fit_lc, coef = x, number=Inf))
 	names(tt) <- colnames(fit_lc$coefficients)
 
+	#add the ANOVA as 
+	tt.F <-  topTable(fit_lc, number=Inf)
+	
+	tt.F <- merge(tt.F, fit_l$coefficients, by=0, sort=F)
+	rownames(tt.F) <- tt.F$Row.names
+	tt.F$Row.names <- NULL
+	
+	tt.F <- tt.F[order(tt.F$adj.P.Val, tt.F$P.Value), ]
+	
+	#save results to file
+	write.table(tt.F, file=file.path(out_dir, "degs_ttF.txt"), sep="\t", row.names = F)
+	
 	wb <- createWorkbook()
 	for(i in 1:length(tt)){
 
@@ -57,26 +67,32 @@ differential_expression <- function(dge=NULL, design=NULL, contr_mat=NULL, out_d
 		addWorksheet(wb, names(tt)[i])
 		writeData(wb, names(tt)[i], tt[[i]])
 		
-		jpeg(file.path(out_dir, paste0("volcano_", names(tt)[i], ".jpg")), width = 180, height = 180, res=300, units="mm")
-
-		par(mar=c(3, 3, 3, .1))
-		par(mgp=c(2, 0.5, 0))
-		
-		plot(tt[[i]]$logFC, -log10(tt[[i]]$adj.P.Val), pch=16, cex=0.7, xlab="logFC", ylab="-log10(q)", col="black", main=names(tt)[i])
-		abline(v=c(-log2(1.5), log2(1.5)), h=-log10(0.01), lty=2)
-		idx_degs <- abs(tt[[i]]$logFC) > log2(1.5) & tt[[i]]$adj.P.Val < 0.05
-		points(tt[[i]]$logFC[idx_degs], -log10(tt[[i]]$adj.P.Val)[idx_degs], pch=16, cex=0.7, xlab="logFC", ylab="-log10(p)", col="purple")
-		
-		if(!is.null(top_genes) & length(tt[[i]][, top_genes_column])>0){
-		  top_genes_idx <- order(tt[[i]]$adj.P.Val, -abs(tt[[i]]$logFC))[1:top_genes]
-		  thigmophobe.labels(tt[[i]]$logFC[top_genes_idx], -log10(tt[[i]]$adj.P.Val)[top_genes_idx], tt[[i]][top_genes_idx, top_genes_column], cex=0.7, font=4)
-		}
-		
-		dev.off()
+		# jpeg(file.path(out_dir, paste0("volcano_", names(tt)[i], ".jpg")), width = 180, height = 180, res=300, units="mm")
+		# 
+		# par(mar=c(3, 3, 3, .1))
+		# par(mgp=c(2, 0.5, 0))
+		# 
+		# plot(tt[[i]]$logFC, -log10(tt[[i]]$adj.P.Val), pch=16, cex=0.7, xlab="logFC", ylab="-log10(q)", col="black", main=names(tt)[i])
+		# abline(v=c(-log2(1.5), log2(1.5)), h=-log10(0.01), lty=2)
+		# idx_degs <- abs(tt[[i]]$logFC) > log2(1.5) & tt[[i]]$adj.P.Val < 0.05
+		# points(tt[[i]]$logFC[idx_degs], -log10(tt[[i]]$adj.P.Val)[idx_degs], pch=16, cex=0.7, xlab="logFC", ylab="-log10(p)", col="purple")
+		# 
+		# if(!is.null(top_genes) & length(tt[[i]][, top_genes_column])>0){
+		#   top_genes_idx <- order(tt[[i]]$adj.P.Val, -abs(tt[[i]]$logFC))[1:top_genes]
+		#   thigmophobe.labels(tt[[i]]$logFC[top_genes_idx], -log10(tt[[i]]$adj.P.Val)[top_genes_idx], tt[[i]][top_genes_idx, top_genes_column], cex=0.7, font=4)
+		# }
+		# 
+		# dev.off()
+		# 
 		
 	}
+	
+	##Add tt F
+	addWorksheet(wb, "tt.F")
+	writeData(wb, "tt.F", tt.F)
+
 	saveWorkbook(wb, file.path(out_dir, "degs.xlsx"), TRUE)
 
-	return(list(fit=fit_lc, tt=tt))
+	return(list(fit=fit_lc, tt=tt, tt.F=tt.F))
 
 }

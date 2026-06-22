@@ -8,4 +8,4 @@ Tools for omics data analysis:
 - normalization of counts according to edgeR and DESeq2;
 - differential expression using limma;
 - Relative Log Expression;
-- mapping among identifiers
+- mapping among identifiers.

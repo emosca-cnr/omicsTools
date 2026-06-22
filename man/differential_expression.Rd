@@ -10,9 +10,7 @@ differential_expression(
   design = NULL,
   contr_mat = NULL,
   out_dir = NULL,
-  top_genes = 10,
-  top_genes_column = "symbol",
-  block = NULL
+  ...
 )
 }
 \arguments{
@@ -20,19 +18,17 @@ differential_expression(
 
 \item{design}{experimental design matrix}
 
-\item{contr_mat}{contrast matrix; see limma::makeContrasts()}
+\item{contr_mat}{contrast matrix; limma::makeContrasts()}
 
 \item{out_dir}{output directory}
 
-\item{top_genes}{number of top genes to label in the volcano plots}
-
-\item{top_genes_column}{column with gene labels for volcano plots}
+\item{...}{further arguments to limma::voomLmFit()}
 }
 \value{
 A list with:
 \enumerate{
-  \item fit; fit object
-  \item tt: list of differential expression tables
+\item fit; fit object
+\item tt: list of differential expression tables
 }
 }
 \description{
