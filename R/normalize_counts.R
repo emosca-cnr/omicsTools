@@ -19,12 +19,6 @@
 
 normalize_counts <- function(X=NULL, gene.annotation=NULL, sample.annotation=NULL, design=NULL){
   
-  if(is.null(out_dir)){
-    out_dir <- getwd()
-  }else{
-    dir.create(out_dir, recursive = T)
-  }
-  
   if(is.null(X) | is.null(sample.annotation)){
     stop("X and sample.annotation are mandatory.\n")
   }
