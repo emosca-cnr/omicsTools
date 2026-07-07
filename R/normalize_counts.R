@@ -1,8 +1,8 @@
 #' Filter and normalize count data
 #' @param X genes-by-samples count matrix
-#' @param gene.annotation data.frame with gene annotations
-#' @param sample.annotation data.frame with sample annotations
-#' @param design experimental design matrix
+#' @param gene.annotation optional data.frame with gene annotations
+#' @param sample.annotation optional data.frame with sample annotations
+#' @param design optional experimental design matrix
 #' @return a list with the following elements
 #'  \enumerate{
 #'           \item dge DGEList
@@ -19,9 +19,13 @@
 
 normalize_counts <- function(X=NULL, gene.annotation=NULL, sample.annotation=NULL, design=NULL){
   
-  if(is.null(X) | is.null(sample.annotation)){
-    stop("X and sample.annotation are mandatory.\n")
+  if(is.null(sample.annotation)){
+    sample.annotation <- data.frame(id=colnames(X), row.names = colnames(X))
   }
+  if(is.null(gene.annotation)){
+    gene.annotation <- data.frame(id=rownames(X), row.names = rownames(X))
+  }
+  
   
   do.blind.false <- TRUE
   if(is.null(design)){
