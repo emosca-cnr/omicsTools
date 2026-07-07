@@ -1,7 +1,7 @@
 #' Filter and normalize count data
 #' @param X genes-by-samples count matrix
-#' @param gene.annotation optional data.frame with gene annotations
-#' @param sample.annotation optional data.frame with sample annotations
+#' @param gene.annotation optional data.frame with gene annotations; row names must be identical to the row names of X
+#' @param sample.annotation optional data.frame with sample annotations; column names must be identical to the column names of X
 #' @param design optional experimental design matrix
 #' @return a list with the following elements
 #'  \enumerate{
@@ -58,7 +58,8 @@ normalize_counts <- function(X=NULL, gene.annotation=NULL, sample.annotation=NUL
 
   #log-cpm_filt
   lcpm <- cpm(dge, log = T)
-  
+  names(dimnames(lcpm)) <- NULL #remove Tags and Samples
+    
   ###DESEq
   dds <- estimateSizeFactors(dds)
   dds <- estimateDispersions(dds)
