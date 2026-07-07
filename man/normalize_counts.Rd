@@ -14,11 +14,11 @@ normalize_counts(
 \arguments{
 \item{X}{genes-by-samples count matrix}
 
-\item{gene.annotation}{data.frame with gene annotations}
+\item{gene.annotation}{optional data.frame with gene annotations; row names must be identical to the row names of X}
 
-\item{sample.annotation}{data.frame with sample annotations}
+\item{sample.annotation}{optional data.frame with sample annotations; column names must be identical to the column names of X}
 
-\item{design}{experimental design matrix}
+\item{design}{optional experimental design matrix}
 }
 \value{
 a list with the following elements
