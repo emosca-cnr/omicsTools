@@ -23,6 +23,6 @@ SummarizedExperiment (Bioconductor)
 
 Once all dependencies are in place, omicsTools can be installed from github as follows:
 ```{r, include=TRUE, eval=FALSE}
-devtools::install_github("emosca-cnr/NPATools")
+devtools::install_github("emosca-cnr/omicsTools")
 ```
 

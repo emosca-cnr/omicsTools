@@ -10,7 +10,7 @@
 #'
 #' @return  filtered count matrix
 #' @export 
-#' @importFrom edgeR DGEList cpm
+#' @importFrom edgeR cpm
 
 filter_counts <- function(X=NULL, filter.by.cpm=TRUE, min.cpm=3, min.counts=10, subset.remove=NULL, min.samples=NULL){
   
@@ -41,19 +41,19 @@ filter_counts <- function(X=NULL, filter.by.cpm=TRUE, min.cpm=3, min.counts=10, 
   }
 
   if(filter.by.cpm){
-    dge <- DGEList(X)
-    cpm <- cpm(dge)
+    cpm <- cpm(X)
     cat("keeping genes with at least", min.cpm, " cpm in", min.samples, "samples...\n")
     keep <- rowSums(cpm >= min.cpm) >= min.samples
+    rm(cpm)
   }else{
     cat("keeping genes with at least", min.counts, "counts in", min.samples, "samples...\n")
     keep <- rowSums(X >= min.counts) >= min.samples
   }
   print(table(keep))
-  X_filt <- X[keep,]
-  cat("Filtered counts", dim(X_filt), "\n")
+  X <- X[keep,]
+  cat("Filtered counts", dim(X), "\n")
 
  
-  return(X_filt)
+  return(X)
   
 }
