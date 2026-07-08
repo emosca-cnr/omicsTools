@@ -14,12 +14,7 @@
 
 differential_expression_DESeq <- function(counts=NULL, sample_ann=NULL, design=NULL, contrasts=NULL, type="apeglm"){
 
-  if(is.null(out_dir)){
-  	out_dir <- getwd()
-  }else{
-  	dir.create(out_dir, recursive = T)
-  }
-  
+
 	dds_int <- DESeqDataSetFromMatrix(countData = counts, colData = sample_ann, design = design) #this gives error due to the presence of NA
 	dds_int <- DESeq(dds_int) #differential expression analysis
 	
