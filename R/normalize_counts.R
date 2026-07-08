@@ -12,7 +12,7 @@
 #'           \item vsdbf DESeq2 transform object, resulting from vst(..., blind=FALSE) for downstream analysis
 #'        }
 #' @export 
-#' @importFrom edgeR calcNormFactors cpm
+#' @importFrom edgeR calcNormFactors cpm DGEList
 #' @importFrom DESeq2 DESeqDataSetFromMatrix estimateSizeFactors estimateDispersions vst
 #' @importFrom SummarizedExperiment assay
 #' @importFrom stats  model.matrix
