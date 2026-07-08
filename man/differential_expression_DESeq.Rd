@@ -8,7 +8,7 @@ differential_expression_DESeq(
   counts = NULL,
   sample_ann = NULL,
   design = NULL,
-  contrasts = NULL,
+  contrast = NULL,
   type = "apeglm"
 )
 }
@@ -19,9 +19,9 @@ differential_expression_DESeq(
 
 \item{design}{design matrix}
 
-\item{contrasts}{contrasts}
-
 \item{type}{algorithm for srhinkage see the documentation of lfcShrink()}
+
+\item{contrasts}{contrasts}
 }
 \value{
 A list with:
